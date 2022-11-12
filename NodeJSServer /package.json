@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "status-code-enum": "^1.0.0"
+  },
+  "name": "UsersManager_WebAPI",
+  "version": "1.0.0",
+  "main": "UsersManager_WebAPI.js",
+  "scripts": {
+    "start": "node ./UsersManager_WebAPI.js "
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

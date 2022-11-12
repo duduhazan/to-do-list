@@ -1,0 +1,109 @@
+#homediv {
+        text-align: center;
+        width: 80%;
+    max-width: 100%;
+    margin: 30px auto;
+    border-radius: 8px;
+    box-shadow: 0 0 6px #00000085;
+    padding: 12px;
+}
+
+.image-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.image-gallery > li {
+  flex-basis: 350px; /* width: 350px; */
+}
+
+.image-gallery li img {
+  object-fit: cover;
+  max-width: 100%;
+  height: 350px;
+  vertical-align: middle;
+  border-radius: 5px;
+}
+
+.tasksList {
+    text-align: center;
+    width: 80%;
+    margin: 30px auto;
+    border-radius: 8px;
+    box-shadow: 0 0 6px #00000085;
+    padding: 12px;
+}
+
+#tasksH1 {
+    text-align: center;
+}
+
+
+#homediv button {
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: none;
+    background: rgb(31, 190, 190);
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    width: 100%;
+}
+
+#navbar {
+    background: teal;
+    color: white;
+    position:relative;
+    width: 100%;
+    height:30px;
+}
+
+#navbar button,#navbar select {
+    height: 30px;
+    color: teal;
+    background: white;
+    cursor: pointer;
+}
+
+#menul {
+    float: left;
+}
+
+#menur {
+position: absolute;
+  right: 0;
+  z-index: 999;
+}
+
+#navbar img {
+    height: 20px;
+    width: 30px;
+    margin-left: 6px;
+}
+
+.AddTask,.UpdateTask {
+    text-align: center;
+    padding: 100px;
+    width: 40%;
+    min-width: fit-content;
+    margin: 30px auto;
+    border-radius: 8px;
+    box-shadow: 0 0 6px #00000085;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+}
+.AddTask button,.UpdateTask button,.UpdateTask input {
+    margin-right: 10%;
+    margin-top: 10px;
+    margin-left: 10%;
+}
+
+.addInputs {
+    width:max-content;
+    margin-right: 10%;
+    margin-top: 10px;
+    margin-left: 10%;
+}
