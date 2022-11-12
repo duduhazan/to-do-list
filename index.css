@@ -1,3 +1,6 @@
+body {
+    font-family: Helvetica, Arial, sans-serif;
+}
 #homediv {
         text-align: center;
         width: 80%;
@@ -42,13 +45,7 @@
 
 
 #homediv button {
-    padding: 12px 16px;
-    border-radius: 8px;
-    border: none;
-    background: rgb(31, 190, 190);
-    color: white;
-    font-size: 20px;
-    cursor: pointer;
+    font-size: 20px;    
     width: 100%;
 }
 

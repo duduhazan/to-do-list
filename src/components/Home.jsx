@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom"
+import Button from '@mui/material/Button';
 
 export default function Home() {
     const navigate = useNavigate();
@@ -16,7 +17,7 @@ export default function Home() {
             </ul>
             <br />
             <br />
-            <button onClick={() => navigate("/tasks")}>Get Started</button>
+            <Button variant="contained" onClick={() => navigate("/tasks")}>Get Started</Button>
         </div>
     )
 }
