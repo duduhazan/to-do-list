@@ -1,10 +1,10 @@
 {
-  "name": "UsersManager_WebAPI",
+  "name": "main",
   "version": "1.0.0",
-  "main": "UsersManager_WebAPI.js",
+  "main": "main.js",
   "type": "module",
   "scripts": {
-    "start": "node --experimental-specifier-resolution=node main.js "
+    "start": "nodemon --experimental-specifier-resolution=node main.js "
   },
   "author": "",
   "license": "ISC",
@@ -12,6 +12,9 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.18.2",
+    "joi": "^17.9.2",
+    "moment": "^2.29.4",
+    "mongoose": "^7.3.1",
     "status-code-enum": "^1.0.0"
   }
 }

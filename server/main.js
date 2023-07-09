@@ -1,17 +1,18 @@
 import express from "express";
 import cors from "cors";
-import { aliveRouter } from "./routes/alive";
 import { tasksRouter } from "./routes/tasks.route";
+import { connectDB } from "./connect-to-db";
 
-function startServer() {
+async function startServer() {
+  await connectDB("mongodb://localhost:27017/to-do");
   const port = 3500;
   const app = express();
 
-  app.use(cors());
+  app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+
+  app.use(express.json());
 
   app.use(tasksRouter());
-
-  app.use(aliveRouter());
 
   app.listen(3500, () => {
     console.log(`started server on port ${port}`);

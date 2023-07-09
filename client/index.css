@@ -104,3 +104,9 @@ position: absolute;
     margin-top: 10px;
     margin-left: 10%;
 }
+
+.no-bullets {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}

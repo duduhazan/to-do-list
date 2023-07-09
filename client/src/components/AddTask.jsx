@@ -1,36 +1,62 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { addTask } from "../services/storage";
+import { Box, Button, TextField } from "@mui/material";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
+import { Api } from "../api";
+import moment from "moment";
 
 export default function AddTask() {
-    //let [name, setName] = useState('');
-    const nameRef = useRef();
-    const destinationDateRef = useRef();
-    const navigate = useNavigate();
+  const nameRef = useRef();
+  const destinationDateRef = useRef();
+  const navigate = useNavigate();
 
-    function onAdd() {
-        let newTask = {
-            name: nameRef.current.value,
-            destinationDate: destinationDateRef.current.value
-        }
-        addTask(newTask).then((res) => {
-            alert('added successfully');
-            navigate("/tasks");
-        }).catch((error) => alert(error.message));
-    }
-    return (
-        <section className="AddTask" >
-            <h2>Add Task</h2>
-            <div className="inputLine">
-                <span>Enter task name: </span>
-                <input className="addInputs" type="text" placeholder="enter new task"
-                    ref={nameRef} />
-            </div>
-            <div className="inputLine">
-                <span>Enter destination date: </span>
-                <input className="addInputs" type="date" min={new Date().toISOString().split('T')[0]} ref={destinationDateRef} />
-            </div >
-            <button onClick={onAdd}>Add task</button>
-        </section>
-    )
+  function onAdd() {
+    let newTask = {
+      name: nameRef.current.value,
+      destinationDate: moment(
+        destinationDateRef.current.value,
+        "DD/MM/YYYY"
+      ).unix(),
+    };
+    Api.addTask(newTask)
+      .then((res) => {
+        alert("added successfully");
+        navigate("/tasks");
+      })
+      .catch((error) => alert(error.message));
+  }
+  return (
+    <section className="AddTask">
+      <h2>Add Task</h2>
+      <TextField
+        label="Enter task name"
+        variant="outlined"
+        color="info"
+        fullWidth
+        margin="normal"
+        inputRef={nameRef}
+      />
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DatePicker
+          minDate={dayjs(Date.now())}
+          label="Destination date"
+          format="DD/MM/YYYY"
+          inputFormat="DD/MM/YYYY"
+          slotProps={{ textField: { InputProps: { color: "primary" } } }}
+          inputRef={destinationDateRef}
+        />
+      </LocalizationProvider>
+      <Box>
+        <Button
+          onClick={onAdd}
+          variant="contained"
+          sx={{ width: { xs: "80%", md: "60%" }, margin: "auto" }}
+        >
+          Add Task
+        </Button>
+      </Box>
+    </section>
+  );
 }
