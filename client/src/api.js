@@ -1,7 +1,8 @@
 import axios from "axios";
 
-const serverUrl = "http://localhost:3500";
+const { VITE_SERVER_URL: serverUrl } = import.meta.env;
 
+console.log("using server url", serverUrl);
 const client = axios.create({ baseURL: serverUrl, withCredentials: true });
 
 export class Api {
