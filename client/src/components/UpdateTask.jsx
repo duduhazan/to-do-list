@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Api } from "../api";
@@ -7,6 +7,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import moment from "moment";
+import { SnackbarContext } from "../context";
 
 export default function UpdateTask() {
   const navigate = useNavigate();
@@ -14,15 +15,18 @@ export default function UpdateTask() {
   let params = useParams();
   let [task, setTask] = useState([]);
   const nameRef = useRef();
+  const { setSnack } = useContext(SnackbarContext);
 
   useEffect(() => {
     Api.getTaskByName(params.name)
       .then((taskJSON) => setTask(taskJSON))
-      .catch((error) => console.log(error.message));
+      .catch(() =>
+        setSnack({ message: "No tasks were found", severity: "error", open: true })
+      );
   }, []);
 
   function onUpdate() {
-    const oldTaskName = params.name
+    const oldTaskName = params.name;
     const newTask = {
       name: nameRef.current.value,
       destinationDate: moment(
@@ -32,12 +36,22 @@ export default function UpdateTask() {
     };
     Api.updateTask(newTask, oldTaskName)
       .then((res) => {
-        alert("updated succesfully");
+        setSnack({
+          message: "The task was successfully updated!",
+          severity: "success",
+          open: true,
+        });
         navigate("/tasks");
       })
-      .catch((error) => alert(error.message));
+      .catch((error) =>
+        setSnack({
+          message: "The task wasn't updated due to internal error",
+          severity: "error",
+          open: true,
+        })
+      );
   }
-  if(!task || task.length == 0) return;
+  if (!task || task.length == 0) return;
   return (
     <section className="UpdateTask">
       <h2>Update Task</h2>

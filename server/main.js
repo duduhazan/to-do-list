@@ -4,6 +4,11 @@ import { tasksRouter } from "./routes/tasks.route";
 import { connectDB } from "./connect-to-db";
 
 async function startServer() {
+  // await connectDB(process.env.DB_URL);
+  // const port = process.env.PORT;
+  // const app = express();
+
+  // app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
   await connectDB("mongodb://localhost:27017/to-do");
   const port = 3500;
   const app = express();
@@ -14,7 +19,7 @@ async function startServer() {
 
   app.use(tasksRouter());
 
-  app.listen(3500, () => {
+  app.listen(port, () => {
     console.log(`started server on port ${port}`);
   });
 }

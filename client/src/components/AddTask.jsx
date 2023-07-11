@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, TextField } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -6,11 +6,13 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { Api } from "../api";
 import moment from "moment";
+import { SnackbarContext } from "../context";
 
 export default function AddTask() {
   const nameRef = useRef();
   const destinationDateRef = useRef();
   const navigate = useNavigate();
+  const { setSnack } = useContext(SnackbarContext);
 
   function onAdd() {
     let newTask = {
@@ -22,10 +24,12 @@ export default function AddTask() {
     };
     Api.addTask(newTask)
       .then((res) => {
-        alert("added successfully");
+        setSnack({ message: "The task was successfully saved!", severity: "success", open: true });
         navigate("/tasks");
       })
-      .catch((error) => alert(error.message));
+      .catch((error) =>
+        setSnack({ message: "The task wasn't saved due to internal error", severity: "error", open: true })
+      );
   }
   return (
     <section className="AddTask">
