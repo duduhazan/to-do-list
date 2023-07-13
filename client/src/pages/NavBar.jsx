@@ -1,4 +1,3 @@
-import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -12,9 +11,12 @@ import ChecklistIcon from "@mui/icons-material/Checklist";
 import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import BlockIcon from "@mui/icons-material/Block";
+import { UserContext } from "../context";
+import { useContext, useState } from "react";
 
 function ResponsiveAppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const { user } = useContext(UserContext);
   const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
@@ -24,6 +26,10 @@ function ResponsiveAppBar() {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+
+  if (!user) {
+    return;
+  }
 
   return (
     <AppBar position="static">
