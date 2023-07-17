@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import { tasksRouter } from "./routes/tasks.route";
 import { connectDB } from "./connect-to-db";
+import { SignInRouter } from "./routes/signin.route";
+import { SignUpRouter } from "./routes/signup";
 
 async function startServer() {
   // await connectDB(process.env.DB_URL);
@@ -16,6 +18,10 @@ async function startServer() {
   app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 
   app.use(express.json());
+
+    app.use(SignInRouter());
+
+    app.use(SignUpRouter());
 
   app.use(tasksRouter());
 
