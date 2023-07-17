@@ -11,6 +11,10 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useNavigate } from "react-router-dom";
+import { Api } from "../api";
+import { useContext } from "react";
+import { SnackbarContext } from "../context";
 
 function Copyright(props) {
   return (
@@ -20,12 +24,8 @@ function Copyright(props) {
       align="center"
       {...props}
     >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
+      {`${"Copyright ©"} Dudu's To-Do List 
+      ${new Date().getFullYear()}.`}
     </Typography>
   );
 }
@@ -35,14 +35,28 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+  const navigate = useNavigate();
+  const { setSnack } = useContext(SnackbarContext);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+
+    Api.addUser({
+      firstName: data.get("firstName"),
+      lastName: data.get("lastName"),
       email: data.get("email"),
       password: data.get("password"),
-    });
+      allowExtraEmails: !!data.get("allowExtraEmails"),
+    })
+      .then()
+      .catch((err) => {
+        setSnack({
+          message: err.response.data,
+          severity: "error",
+          open: true,
+        });
+      });
   };
 
   return (
@@ -115,7 +129,11 @@ export default function SignUp() {
               <Grid item xs={12}>
                 <FormControlLabel
                   control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
+                    <Checkbox
+                      name="allowExtraEmails"
+                      value="allowExtraEmails"
+                      color="primary"
+                    />
                   }
                   label="I want to receive inspiration, marketing promotions and updates via email."
                 />
@@ -131,7 +149,7 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link onClick={() => navigate("/signin")} variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>

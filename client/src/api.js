@@ -25,8 +25,24 @@ export class Api {
     const { data } = await client.put(`/tasks/${oldTaskName}`, newTask);
     return data;
   }
+
   static async deleteTasks(selectedTasks) {
     const { data } = await client.delete(`/tasks`, { data: selectedTasks });
     return data;
   }
+
+  static async addUser(user) {
+    const { data } = await client.post(`/user`, user);
+    return data;
+  }
+  
+  static async getUser(user) {
+    const { data } = await client.post(`/auth/user`, user);
+    return data;
+  }
+  
+    static async addGuest(user) {
+      const { data } = await client.post(`/guest`, user);
+      return data;
+    }
 }

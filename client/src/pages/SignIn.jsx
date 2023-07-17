@@ -11,6 +11,10 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { SnackbarContext } from "../context";
+import { Api } from "../api";
 
 function Copyright(props) {
   return (
@@ -20,12 +24,8 @@ function Copyright(props) {
       align="center"
       {...props}
     >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
+      {`${"Copyright ©"} Dudu's To-Do List 
+      ${new Date().getFullYear()}.`}
     </Typography>
   );
 }
@@ -35,14 +35,27 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignIn() {
+  const navigate = useNavigate();
+  const { setSnack } = useContext(SnackbarContext);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+
+    Api.getUser({
       email: data.get("email"),
       password: data.get("password"),
-    });
+      rememberMe: !!data.get("rememberMe"),
+    })
+      .then()
+      .catch((err) => {
+        setSnack({
+          message:
+            "the email address is already being used. please choose another email address",
+          severity: "error",
+          open: true,
+        });
+      });
   };
 
   return (
@@ -90,7 +103,9 @@ export default function SignIn() {
               autoComplete="current-password"
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
+              control={
+                <Checkbox name="rememberMe" value="remember" color="primary" />
+              }
               label="Remember me"
             />
             <Button
@@ -103,13 +118,24 @@ export default function SignIn() {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link
+                  sx={{
+                    cursor: "pointer",
+                  }}
+                  variant="body2"
+                >
                   Forgot password?
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                <Link
+                  onClick={() => navigate("/signup")}
+                  sx={{
+                    cursor: "pointer",
+                  }}
+                  variant="body2"
+                >
+                  Don't have an account? Sign Up
                 </Link>
               </Grid>
             </Grid>
