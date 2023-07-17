@@ -53,7 +53,19 @@ export default function UpdateTask() {
   }
   if (!task || task.length == 0) return;
   return (
-    <section className="UpdateTask">
+    <Box
+      sx={{
+        textAlign: "center",
+        width: { md: "60%", xs: "100%" },
+        minWidth: "fit-content",
+        margin: { md: "20px auto", xs: 0 },
+        borderRadius: "8px",
+        boxShadow: "0 0 6px #00000085",
+        padding: "20px",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <h2>Update Task</h2>
       <TextField
         variant="outlined"
@@ -63,7 +75,7 @@ export default function UpdateTask() {
         defaultValue={task.name}
       />
       <TextField
-        label="Enter task name"
+        label="Enter new task name"
         variant="outlined"
         color="info"
         fullWidth
@@ -75,7 +87,7 @@ export default function UpdateTask() {
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
           minDate={dayjs(Date.now())}
-          label="Destination date"
+          label="Enter destination date"
           format="DD/MM/YYYY"
           inputFormat="DD/MM/YYYY"
           slotProps={{ textField: { InputProps: { color: "primary" } } }}
@@ -86,11 +98,11 @@ export default function UpdateTask() {
         <Button
           onClick={onUpdate}
           variant="contained"
-          sx={{ width: { xs: "80%", md: "60%" }, margin: "auto" }}
+          sx={{ width: { xs: "80%", md: "60%" }, margin: "20px auto 0" }}
         >
           Update Task
         </Button>
       </Box>
-    </section>
+    </Box>
   );
 }

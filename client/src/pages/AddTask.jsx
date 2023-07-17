@@ -24,15 +24,35 @@ export default function AddTask() {
     };
     Api.addTask(newTask)
       .then((res) => {
-        setSnack({ message: "The task was successfully saved!", severity: "success", open: true });
+        setSnack({
+          message: "The task was successfully saved!",
+          severity: "success",
+          open: true,
+        });
         navigate("/tasks");
       })
       .catch((error) =>
-        setSnack({ message: "The task wasn't saved due to internal error", severity: "error", open: true })
+        setSnack({
+          message: "The task wasn't saved due to internal error",
+          severity: "error",
+          open: true,
+        })
       );
   }
   return (
-    <section className="AddTask">
+    <Box
+      sx={{
+        textAlign: "center",
+        width: { md: "60%", xs: "100%" },
+        minWidth: "fit-content",
+        margin: { md: "20px auto", xs: 0 },
+        borderRadius: "8px",
+        boxShadow: "0 0 6px #00000085",
+        padding: "20px",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <h2>Add Task</h2>
       <TextField
         label="Enter task name"
@@ -45,7 +65,7 @@ export default function AddTask() {
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
           minDate={dayjs(Date.now())}
-          label="Destination date"
+          label="Enter destination date"
           format="DD/MM/YYYY"
           inputFormat="DD/MM/YYYY"
           slotProps={{ textField: { InputProps: { color: "primary" } } }}
@@ -56,11 +76,11 @@ export default function AddTask() {
         <Button
           onClick={onAdd}
           variant="contained"
-          sx={{ width: { xs: "80%", md: "60%" }, margin: "auto" }}
+          sx={{ width: { xs: "80%", md: "60%" }, margin: "20px auto 0" }}
         >
           Add Task
         </Button>
       </Box>
-    </section>
+    </Box>
   );
 }
