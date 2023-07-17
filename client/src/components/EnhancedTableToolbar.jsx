@@ -1,9 +1,19 @@
-import { IconButton, Toolbar, Tooltip, Typography, alpha } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  Toolbar,
+  Tooltip,
+  Typography,
+  alpha,
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import PropTypes from "prop-types";
 
-export default function EnhancedTableToolbar({ numSelected, selected, setSelected, deleteTasks }) {
+export default function EnhancedTableToolbar({
+  numSelected,
+  deleteTasks,
+}) {
   return (
     <Toolbar
       sx={{
@@ -19,37 +29,36 @@ export default function EnhancedTableToolbar({ numSelected, selected, setSelecte
       }}
     >
       {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} selected
-        </Typography>
+        <>
+          <Typography
+            sx={{ flex: "1 1 100%" }}
+            color="inherit"
+            variant="subtitle1"
+            component="div"
+          >
+            {numSelected} selected
+          </Typography>
+          <Tooltip title="Delete">
+            <IconButton onClick={deleteTasks}>
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+        </>
       ) : (
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          Tasks List
-        </Typography>
-      )}
-
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton onClick={deleteTasks}>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
+        <>
+          <Typography
+            variant="h6"
+            id="tableTitle"
+            component="div"
+          >
+            Tasks List
+          </Typography>
+          <Tooltip title="Filter list">
+            <IconButton>
+              <FilterListIcon />
+            </IconButton>
+          </Tooltip>
+        </>
       )}
     </Toolbar>
   );

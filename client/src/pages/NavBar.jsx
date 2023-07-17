@@ -38,9 +38,6 @@ function ResponsiveAppBar() {
           <ChecklistIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography
             variant="h6"
-            noWrap
-            component="a"
-            href="/"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -83,20 +80,17 @@ function ResponsiveAppBar() {
                 display: { xs: "block", md: "none" },
               }}
             >
-                <MenuItem onClick={() => navigate("/tasks/addTask")}>
-                  <Typography textAlign="center">Add Task</Typography>
-                </MenuItem>
-                <MenuItem onClick={() => navigate("/tasks")}>
-                  <Typography textAlign="center">Show Tasks</Typography>
-                </MenuItem>
+              <MenuItem onClick={() => navigate("/tasks/addTask")}>
+                <Typography textAlign="center">Add Task</Typography>
+              </MenuItem>
+              <MenuItem onClick={() => navigate("/tasks")}>
+                <Typography textAlign="center">Show Tasks</Typography>
+              </MenuItem>
             </Menu>
           </Box>
           <ChecklistIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
             variant="h5"
-            noWrap
-            component="a"
-            href=""
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
