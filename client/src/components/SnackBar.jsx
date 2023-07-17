@@ -4,7 +4,7 @@ import { useContext } from "react";
 
 
 const SnackBar = () => {
-    const { snack } = useContext(SnackbarContext);
+    const { snack,setSnack } = useContext(SnackbarContext);
   return (
     <Snackbar
       autoHideDuration={3000}
