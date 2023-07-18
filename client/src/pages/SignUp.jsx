@@ -49,7 +49,14 @@ export default function SignUp() {
       password: data.get("password"),
       allowExtraEmails: !!data.get("allowExtraEmails"),
     })
-      .then()
+      .then(()=>{
+        setSnack({
+          message: "user created successfully, redirecting to login page",
+          severity: "success",
+          open: true,
+        });
+        navigate("/signin")
+      })
       .catch((err) => {
         setSnack({
           message: err.response.data,
