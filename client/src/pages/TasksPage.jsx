@@ -16,9 +16,9 @@ import EnhancedTableHead from "../components/enhancedTH";
 import EditIcon from "@mui/icons-material/Edit";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
-import { SnackbarContext } from "../context";
+import { SnackbarContext, UserContext } from "../context";
 import EnhancedTableToolbar from "../components/EnhancedTableToolbar";
-
+import { CircularProgress } from "@mui/material";
 
 export default function TasksPage() {
   const [tempTasks, setTempTasks] = useState([]);
@@ -30,15 +30,20 @@ export default function TasksPage() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const navigate = useNavigate();
   const { setSnack } = useContext(SnackbarContext);
+  const { user } = useContext(UserContext);
+  const [loader, setLoader] = useState(true);
 
   useEffect(() => {
-    rerender();
-  }, []);
+    if(user) {
+      rerender();
+    }
+  }, [user]);
 
   function rerender() {
     Api.getTasks()
       .then((taskJSON) => {
         setTempTasks(taskJSON);
+        setLoader(false);
       })
       .catch(() => {
         setTempTasks([]);
@@ -158,79 +163,87 @@ export default function TasksPage() {
           deleteTasks={deleteTasks}
         />
         <TableContainer>
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-            size={dense ? "small" : "medium"}
-          >
-            <EnhancedTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={tempTasks?.length}
-            />
-            <TableBody>
-              {!!tempTasks?.length &&
-                visibleRows.map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
-                  const labelId = `enhanced-table-checkbox-${index}`;
+          {loader ? (
+            <Box textAlign={"center"}>
+              <CircularProgress size={100} color="info" />
+            </Box>
+          ) : (
+            <Table
+              sx={{ minWidth: 750 }}
+              aria-labelledby="tableTitle"
+              size={dense ? "small" : "medium"}
+            >
+              <EnhancedTableHead
+                numSelected={selected.length}
+                order={order}
+                orderBy={orderBy}
+                onSelectAllClick={handleSelectAllClick}
+                onRequestSort={handleRequestSort}
+                rowCount={tempTasks?.length}
+              />
+              <TableBody>
+                {!!tempTasks?.length &&
+                  visibleRows.map((row, index) => {
+                    const isItemSelected = isSelected(row.name);
+                    const labelId = `enhanced-table-checkbox-${index}`;
 
-                  return (
-                    <TableRow
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.name}
-                      selected={isItemSelected}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          onClick={(event) => handleClick(event, row.name)}
-                          checked={isItemSelected}
-                          inputProps={{
-                            "aria-labelledby": labelId,
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell padding="checkbox">
-                        <IconButton
-                          onClick={() =>
-                            navigate(`/tasks/updateTask/${row.name}`)
-                          }
-                        >
-                          <EditIcon />
-                        </IconButton>
-                      </TableCell>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
+                    return (
+                      <TableRow
+                        aria-checked={isItemSelected}
+                        tabIndex={-1}
+                        key={row.name}
+                        selected={isItemSelected}
                       >
-                        {row.name}
-                      </TableCell>
-                      <TableCell align="center">
-                        {moment.unix(row.date).format("DD/MM/YYYY")}
-                      </TableCell>
-                      <TableCell align="center">
-                        {moment.unix(row.destinationDate).format("DD/MM/YYYY")}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow
-                  style={{
-                    height: (dense ? 33 : 53) * emptyRows,
-                  }}
-                >
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            color="primary"
+                            onClick={(event) => handleClick(event, row.name)}
+                            checked={isItemSelected}
+                            inputProps={{
+                              "aria-labelledby": labelId,
+                            }}
+                          />
+                        </TableCell>
+                        <TableCell padding="checkbox">
+                          <IconButton
+                            onClick={() =>
+                              navigate(`/tasks/updateTask/${row.name}`)
+                            }
+                          >
+                            <EditIcon />
+                          </IconButton>
+                        </TableCell>
+                        <TableCell
+                          component="th"
+                          id={labelId}
+                          scope="row"
+                          padding="none"
+                        >
+                          {row.name}
+                        </TableCell>
+                        <TableCell align="center">
+                          {moment.unix(row.date).format("DD/MM/YYYY")}
+                        </TableCell>
+                        <TableCell align="center">
+                          {moment
+                            .unix(row.destinationDate)
+                            .format("DD/MM/YYYY")}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                {emptyRows > 0 && (
+                  <TableRow
+                    style={{
+                      height: (dense ? 33 : 53) * emptyRows,
+                    }}
+                  >
+                    <TableCell colSpan={6} />
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          )}
         </TableContainer>
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}

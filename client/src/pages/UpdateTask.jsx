@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Api } from "../api";
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, CircularProgress, TextField } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
@@ -16,13 +16,20 @@ export default function UpdateTask() {
   let [task, setTask] = useState([]);
   const nameRef = useRef();
   const { setSnack } = useContext(SnackbarContext);
+  const [loader, setLoader] = useState(true);
 
   useEffect(() => {
     Api.getTaskByName(params.name)
       .then((taskJSON) => setTask(taskJSON))
       .catch(() =>
-        setSnack({ message: "No tasks were found", severity: "error", open: true })
-      );
+        setSnack({
+          message: "No task found",
+          severity: "error",
+          open: true,
+        })
+      ).finally(()=>{
+        setLoader(false)
+      })
   }, []);
 
   function onUpdate() {
@@ -66,34 +73,44 @@ export default function UpdateTask() {
         flexDirection: "column",
       }}
     >
-      <h2>Update Task</h2>
-      <TextField
-        variant="outlined"
-        fullWidth
-        margin="normal"
-        disabled
-        defaultValue={task.name}
-      />
-      <TextField
-        label="Enter new task name"
-        variant="outlined"
-        color="info"
-        fullWidth
-        sx={{
-          marginBottom: "8px",
-        }}
-        inputRef={nameRef}
-      />
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DatePicker
-          minDate={dayjs(Date.now())}
-          label="Enter destination date"
-          format="DD/MM/YYYY"
-          inputFormat="DD/MM/YYYY"
-          slotProps={{ textField: { InputProps: { color: "primary" } } }}
-          inputRef={destinationDateRef}
-        />
-      </LocalizationProvider>
+      <h2 style={{ margin: "0px auto 20px" }}>Update Task</h2>
+      {loader ? (
+        <Box textAlign={"center"} margin={3}>
+          <CircularProgress size={133} color="info" />
+        </Box>
+      ) : (
+        <>
+          <TextField
+            variant="outlined"
+            fullWidth
+            sx={{
+              marginBottom: "8px",
+            }}
+            disabled
+            defaultValue={task.name}
+          />
+          <TextField
+            label="Enter new task name"
+            variant="outlined"
+            color="info"
+            fullWidth
+            sx={{
+              marginBottom: "8px",
+            }}
+            inputRef={nameRef}
+          />
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              minDate={dayjs(Date.now())}
+              label="Enter destination date"
+              format="DD/MM/YYYY"
+              inputFormat="DD/MM/YYYY"
+              slotProps={{ textField: { InputProps: { color: "primary" } } }}
+              inputRef={destinationDateRef}
+            />
+          </LocalizationProvider>
+        </>
+      )}
       <Box>
         <Button
           onClick={onUpdate}
