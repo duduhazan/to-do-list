@@ -1,22 +1,32 @@
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { Box, Grid, ImageList, ImageListItem } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { SnackbarContext, UserContext } from "../context";
 
 export default function Home() {
   const navigate = useNavigate();
   const [cols, setCols] = useState(2);
+  const { setSnack } = useContext(SnackbarContext);
+  const { user } = useContext(UserContext);
 
-  useEffect(()=>{
-      const width = screen.width;
-      if (width > 800) {
-        setCols(3);
-      }
-      if (width < 600) {
-        setCols(1);
-      }
-
-  },[])
+  useEffect(() => {
+    if (user) {
+      setSnack({
+        message: "successfully logged in, redirecting to tasks page",
+        severity: "success",
+        open: true,
+      });
+      //   navigate("/tasks");
+    }
+    const width = screen.width;
+    if (width > 800) {
+      setCols(3);
+    }
+    if (width < 600) {
+      setCols(1);
+    }
+  }, [user]);
 
   const images = [
     "/to_do_image.jpg",

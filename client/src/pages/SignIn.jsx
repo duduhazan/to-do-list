@@ -34,24 +34,26 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-export default function SignIn() {
+export default function SignIn(props) {
   const navigate = useNavigate();
   const { setSnack } = useContext(SnackbarContext);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-
-    Api.getUser({
+    const u = {
       email: data.get("email"),
       password: data.get("password"),
       rememberMe: !!data.get("rememberMe"),
-    })
-      .then()
+    };
+    Api.loginUser(u)
+    .then((user) => {
+        props.onLogin(user)
+        navigate("/tasks");
+      })
       .catch((err) => {
         setSnack({
-          message:
-            "the email address is already being used. please choose another email address",
+          message: "The email or password you entered is incorrect",
           severity: "error",
           open: true,
         });
