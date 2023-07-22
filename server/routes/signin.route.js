@@ -25,17 +25,17 @@ export const SignInRouter = (secret) => {
       if (!user) {
         return res
           .status(StatusCode.ClientErrorNotFound)
-          .send("user not found in database");
+          .send("invalid email or password");
       }
 
       if (!compareSync(req.body.password, user.password)) {
         return res
           .status(StatusCode.ClientErrorUnauthorized)
-          .send("incorrect password!");
+          .send("invalid email or password");
       }
 
       const token = jsonWebtoken.default.sign(
-        { email: user.email, name: user.name, id: user.id },
+        { email: user.email, id: user.id },
         secret,
         { expiresIn: "1d" }
       );

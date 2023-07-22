@@ -49,13 +49,13 @@ export default function SignUp() {
       password: data.get("password"),
       allowExtraEmails: !!data.get("allowExtraEmails"),
     })
-      .then(()=>{
+      .then(() => {
         setSnack({
           message: "user created successfully, redirecting to login page",
           severity: "success",
           open: true,
         });
-        navigate("/signin")
+        navigate("/signin");
       })
       .catch((err) => {
         setSnack({
@@ -156,7 +156,13 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link onClick={() => navigate("/signin")} variant="body2">
+                <Link
+                  sx={{
+                    cursor: "pointer",
+                  }}
+                  onClick={() => navigate("/signin")}
+                  variant="body2"
+                >
                   Already have an account? Sign in
                 </Link>
               </Grid>

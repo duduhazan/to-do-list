@@ -30,7 +30,7 @@ export const SignUpRouter = () => {
       user.password = hashSync(user.password, salt);
 
       await new userModel(user).save();
-      res.json({ email: user.email, name: user.name, isBusiness: user.isBusiness });
+      res.json({ email: user.email });
     } catch (error) {
       console.error(error);
       return res.status(StatusCode.ServerErrorInternal).send("internal error");

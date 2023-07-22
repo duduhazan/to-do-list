@@ -257,7 +257,7 @@ export default function TasksPage() {
       </Paper>
       <FormControlLabel
         control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
+        label="Dense view"
       />
     </Box>
   );
