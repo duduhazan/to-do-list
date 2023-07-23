@@ -60,23 +60,7 @@ export default function Home() {
         ))}
       </ImageList>
       <Grid container spacing={2} marginTop={1}>
-        <Grid item xs={cols < 3 ? 12 : 4}>
-          <Button
-            fullWidth
-            sx={{
-              backgroundColor: "#aab8c4",
-              fontWeight: "bold",
-              "&:hover": {
-                backgroundColor: "#85929d",
-              },
-            }}
-            variant="contained"
-            onClick={() => navigate("/tasks")}
-          >
-            Guest
-          </Button>
-        </Grid>
-        <Grid item xs={cols < 3 ? 12 : 4}>
+        <Grid item xs={cols < 2 ? 12 : 6}>
           <Button
             sx={{
               backgroundColor: "#6b737b",
@@ -92,7 +76,7 @@ export default function Home() {
             Sign in
           </Button>
         </Grid>
-        <Grid item xs={cols < 3 ? 12 : 4}>
+        <Grid item xs={cols < 2 ? 12 : 6}>
           <Button
             sx={{
               backgroundColor: "#5581a6",

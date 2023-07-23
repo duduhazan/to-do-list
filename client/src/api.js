@@ -45,9 +45,4 @@ export class Api {
     const { data } = await client.get(`/user`);
     return data;
   }
-
-  static async addGuest(user) {
-    const { data } = await client.post(`/guest`, user);
-    return data;
-  }
 }
