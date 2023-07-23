@@ -34,19 +34,18 @@ export default function TasksPage() {
   const [loader, setLoader] = useState(true);
 
   useEffect(() => {
-    if(user) {
       rerender();
-    }
   }, [user]);
 
   function rerender() {
     Api.getTasks()
       .then((taskJSON) => {
         setTempTasks(taskJSON);
-        setLoader(false);
       })
       .catch(() => {
         setTempTasks([]);
+      }).finally(() => {
+        setLoader(false);
       });
   }
 
@@ -166,6 +165,10 @@ export default function TasksPage() {
           {loader ? (
             <Box textAlign={"center"}>
               <CircularProgress size={100} color="info" />
+            </Box>
+          ) : tempTasks?.length === 0 ? (
+            <Box textAlign={"center"}>
+              <h3>There are no tasks yet, try and add one!</h3>
             </Box>
           ) : (
             <Table

@@ -8,7 +8,8 @@ export const tasksRouter = () => {
 
   router.get("/tasks", async (req, res) => {
     try {
-      const tasks = await taskModel.find();
+      const userId = req.user.id;
+      const tasks = await taskModel.find({ userId });
 
       if (!tasks?.length) {
         return res.status(404).send("tasks not found in database");
@@ -36,15 +37,17 @@ export const tasksRouter = () => {
 
   router.post("/tasks", async (req, res) => {
     try {
-      const result = validateTask(req.body);
+      const newTask = {
+        ...req.body,
+        date: Math.floor(Date.now() / 1000),
+        userId: req.user.id,
+      };
+
+      const result = validateTask(newTask);
 
       if (result.error) {
         return res.status(400).send(result.error.message);
       }
-      const newTask = {
-        ...req.body,
-        date: Math.floor(Date.now() / 1000),
-      };
       const task = await new taskModel(newTask).save();
 
       res.status(200).json(task);
